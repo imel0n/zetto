@@ -13,7 +13,7 @@
         <input type="password" id="password" placeholder="Enter your password" />
       </div>
 
-      <button class="login-button">Log In</button>
+      <button class="login-button" @click="handleLogin">Log In</button>
       
       <p class="footer-text">Don't have an account? <span>Sign up</span></p>
     </div>
@@ -21,6 +21,14 @@
 </template>
 
 <script>
+export default {
+  methods: {
+    handleLogin() {
+      console.log("attempting login");
+      this.$router.push("/home");
+    }
+  }
+}
 </script>
 
 <style scoped>
