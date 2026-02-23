@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zetto - My Profile</title>
+    <style>
+        /* Global Styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f7f9;
+            color: #333;
+        }
+
+        .app-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Top Header */
+        .top-bar {
+            background-color: white;
+            padding: 0 40px;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e1e4e8;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: skyblue;
+            letter-spacing: 1px;
+        }
+
+        /* Profile Layout */
+        .profile-content {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .profile-container {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+        }
+
+        /* Left Column: User Card */
+        .user-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            height: fit-content;
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            background-color: #f0f8ff;
+            border: 4px solid skyblue;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            color: skyblue;
+        }
+
+        .user-card h2 {
+            margin: 10px 0 5px;
+            font-size: 1.5rem;
+        }
+
+        .user-card p {
+            color: #888;
+            margin-bottom: 25px;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .stat-item b {
+            display: block;
+            font-size: 1.2rem;
+            color: skyblue;
+        }
+
+        .stat-item span {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        /* Right Column: Settings */
+        .settings-pane {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        h3 {
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            color: #444;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #fafafa;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: skyblue;
+            background: #fff;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-save {
+            background: skyblue;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .btn-logout {
+            background: #fff;
+            color: #ff6b6b;
+            border: 1px solid #ff6b6b;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-logout:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            background-color: white;
+            border-top: 1px solid #e1e4e8;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 100px;
+        }
+
+        .nav-link {
+            color: #aaa;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            padding-bottom: 5px;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-link.active {
+            color: skyblue;
+            border-bottom-color: skyblue;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <!-- Top Navigation -->
+        <header class="top-bar">
+            <div class="brand">ZETTO</div>
+            <div style="color: #888">Settings > <strong>Profile</strong></div>
+        </header>
+
+        <!-- Profile Body -->
+        <main class="profile-content">
+            <div class="profile-container">
+                
+                <!-- Left Column -->
+                <div class="user-card">
+                    <div class="profile-pic">👤</div>
+                    <h2>Jie Ming</h2>
+                    <p>Travel Enthusiast</p>
+                    
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <b>12</b>
+                            <span>Trips</span>
+                        </div>
+                        <div class="stat-item">
+                            <b>5</b>
+                            <span>Countries</span>
+                        </div>
+                        <div class="stat-item">
+                            <b>$2.4k</b>
+                            <span>Settled</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="settings-pane">
+                    <h3>Account Settings</h3>
+                    
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" value="Jie Ming">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" value="jieming@example.com">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Currency Preference</label>
+                        <input type="text" value="USD ($)">
+                    </div>
+
+                    <h3>Security</h3>
+                    <div class="input-group">
+                        <label>New Password</label>
+                        <input type="password" placeholder="••••••••">
+                    </div>
+
+                    <div class="action-btns">
+                        <button class="btn-save">Save Changes</button>
+                        <button class="btn-logout">Logout</button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Footer Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-links">
+                <div class="nav-link">✈ My Trips</div>
+                <div class="nav-link">📅 Calendar</div>
+                <div class="nav-link active">👤 Profile</div>
+            </div>
+        </nav>
+    </div>
+
+</body>
+</html>
