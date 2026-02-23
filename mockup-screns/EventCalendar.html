@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Calendar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            display: flex;
+        }
+        .sidebar {
+            width: 30%;
+            margin-right: 20px;
+        }
+        .mini-calendar {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .calendar-header {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        .day-name {
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+        }
+        .day {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #eee;
+            cursor: pointer;
+        }
+        .day:hover {
+            background-color: #f0f0f0;
+        }
+        .day.event-day {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .main-content {
+            flex: 1;
+        }
+        .date-panes {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .date-pane {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .date-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .events-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .event-item {
+            margin-bottom: 8px;
+            padding: 8px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+        }
+        .event-time {
+            font-weight: bold;
+            color: #555;
+        }
+        .event-description {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="mini-calendar">
+            <div class="calendar-header">February 2026</div>
+            <div class="calendar-grid">
+                <div class="day-name">Sun</div>
+                <div class="day-name">Mon</div>
+                <div class="day-name">Tue</div>
+                <div class="day-name">Wed</div>
+                <div class="day-name">Thu</div>
+                <div class="day-name">Fri</div>
+                <div class="day-name">Sat</div>
+                <!-- Empty cells for days before July 1 -->
+                <div class="day">1</div>
+                <div class="day">2</div>
+                <div class="day">3</div>
+                <div class="day">4</div>
+                <div class="day">5</div>
+                <div class="day">6</div>
+                <div class="day">7</div>
+                <div class="day">8</div>
+                <div class="day">9</div>
+                <div class="day">10</div>
+                <div class="day">11</div>
+                <div class="day">12</div>
+                <div class="day">13</div>
+                <div class="day">14</div>
+                <div class="day event-day">15</div>
+                <div class="day event-day">16</div>
+                <div class="day event-day">17</div>
+                <div class="day">18</div>
+                <div class="day">19</div>
+                <div class="day">20</div>
+                <div class="day">21</div>
+                <div class="day">22</div>
+                <div class="day">23</div>
+                <div class="day">24</div>
+                <div class="day">25</div>
+                <div class="day">26</div>
+                <div class="day">27</div>
+                <div class="day">28</div>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <h1>Event Calendar</h1>
+        <div class="date-panes">
+        <div class="date-pane">
+            <div class="date-header">February 15, 2026</div>
+            <ul class="events-list">
+                <li class="event-item">
+                    <span class="event-time">9:00 AM</span>
+                    <span class="event-description">Airport to hotel</span>
+                </li>
+                <li class="event-item">
+                    <span class="event-time">12:00 PM</span>
+                    <span class="event-description">Lunch</span>
+                </li>
+                <li class="event-item">
+                    <span class="event-time">6:00 PM</span>
+                    <span class="event-description">Dinner</span>
+                </li>
+            </ul>
+        </div>
+        <div class="date-pane">
+            <div class="date-header">February 16, 2026</div>
+            <ul class="events-list">
+                <li class="event-item">
+                    <span class="event-time">9:00 AM</span>
+                    <span class="event-description">Mao Zedong Mausoleum</span>
+                </li>
+                <li class="event-item">
+                    <span class="event-time">3:00 PM</span>
+                    <span class="event-description">Lunch</span>
+                </li>
+                <li class="event-item">
+                    <span class="event-time">10:00 PM</span>
+                    <span class="event-description">Supper</span>
+                </li>
+            </ul>
+        </div>
+        <div class="date-pane">
+            <div class="date-header">February 17, 2026</div>
+            <ul class="events-list">
+                <li class="event-item">
+                    <span class="event-time">10:00 AM</span>
+                    <span class="event-description">Great Wall</span>
+                </li>
+                <li class="event-item">
+                    <span class="event-time">7:00 PM</span>
+                    <span class="event-description">Dinner and xiangsheng</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
