@@ -85,16 +85,13 @@
             max-width: 1100px;
             margin: 0 auto;
             width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
         }
 
         .page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .page-header h1 {
@@ -118,41 +115,71 @@
             background-color: #7dc8e8;
         }
 
-        /* Center Empty State */
-        .empty-state {
-            flex: 1;
+        /* Trip Card Grid */
+        .trip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .trip-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-left: 6px solid skyblue;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .icon-circle {
-            width: 100px;
-            height: 100px;
-            background-color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        .trip-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
 
-        .icon-circle span {
-            font-size: 3rem;
-            color: skyblue;
-            line-height: 1;
-        }
-
-        .empty-state h2 {
-            margin: 0 0 10px 0;
+        .trip-card h2 {
+            margin: 0;
+            font-size: 1.4rem;
             color: #333;
         }
 
-        .empty-state p {
-            color: #777;
-            margin-bottom: 25px;
+        .trip-date {
+            color: #888;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .trip-members {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .trip-footer {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .budget-brief {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .status-tag {
+            background: #e1f5fe;
+            color: #039be5;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         /* Bottom Tab Navigation */
@@ -216,14 +243,26 @@
                     <button class="add-btn">+ New Trip</button>
                 </header>
 
-                <div class="empty-state">
-                    <div>
-                        <div class="icon-circle">
-                            <span>+</span>
+                <div class="trip-grid">
+                    <!-- China Vacation Card -->
+                    <div class="trip-card" onclick="window.location.href='TripDashboard.html'">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <h2>China Vacation</h2>
+                            <span class="status-tag">Upcoming</span>
                         </div>
-                        <h2>No trips yet</h2>
-                        <p>Create your first group trip to get started!</p>
-                        <button class="add-btn" style="padding: 15px 40px;">Get Started</button>
+                        <div class="trip-date">📅 Jan 12, 2026 - May 09, 2026</div>
+                        <div class="trip-members">
+                            <strong>Members:</strong> Jie Ming, An Yee, Lucas +2 others
+                        </div>
+                        <div class="trip-footer">
+                            <span class="budget-brief">Budget: $700 / $1000</span>
+                            <span style="color: skyblue; font-weight: bold; font-size: 0.9rem;">View Details →</span>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder for New Trip (Optional) -->
+                    <div class="trip-card" style="border-left: 6px dashed #ccc; background: rgba(255,255,255,0.5); display: flex; justify-content: center; align-items: center; height: 180px;">
+                        <span style="color: #aaa; font-weight: bold;">+ Add Another Trip</span>
                     </div>
                 </div>
             </div>
@@ -235,10 +274,10 @@
                 <div class="nav-link active">
                     <span class="nav-icon">✈</span> My Trips
                 </div>
-                <div class="nav-link">
+                <div class="nav-link" onclick="window.location.href='EventCalendar.html'">
                     <span class="nav-icon">📅</span> Calendar
                 </div>
-                <div class="nav-link">
+                <div class="nav-link" onclick="window.location.href='ProfilePage.html'">
                     <span class="nav-icon">👤</span> My Profile
                 </div>
             </div>
