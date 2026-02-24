@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zetto - New Bill Modal</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f7f9; color: #333;
+        }
+
+        /* --- BACKGROUND CONTENT (GHOSTED) --- */
+        .app-wrapper { display: flex; flex-direction: column; height: 100vh; filter: blur(0px); pointer-events: none; opacity: 0.6; }
+        .top-bar { background-color: white; padding: 0 40px; height: 70px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e1e4e8; }
+        .brand { font-weight: 800; font-size: 1.4rem; color: skyblue; letter-spacing: 1px; }
+        .dashboard-content { display: flex; flex: 1; padding: 20px; gap: 20px; }
+        .pane { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); flex: 1; }
+
+        /* --- MODAL OVERLAY --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(30, 45, 60, 0.7); 
+            display: flex; justify-content: center; align-items: center; z-index: 1000;
+        }
+
+        /* --- MODAL BOX --- */
+        .modal-card {
+            background: white; width: 950px; max-width: 95%; max-height: 90vh;
+            border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            display: flex; flex-direction: column; overflow: hidden;
+            animation: modalPop 0.25s ease-out;
+        }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            padding: 25px 40px; border-bottom: 1px solid #f0f0f0;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .modal-header h2 { margin: 0; font-size: 1.5rem; color: #333; }
+        .close-btn { font-size: 2rem; color: #ddd; cursor: pointer; border: none; background: none; }
+
+        .modal-body { padding: 0 40px 30px 40px; overflow-y: auto; }
+
+        /* Scan Receipt Button */
+        .scan-bar {
+            background: #f0faff; border: 2px dashed #87ceeb; border-radius: 12px;
+            padding: 16px; margin: 25px 0; text-align: center;
+            cursor: pointer; transition: 0.2s;
+        }
+        .scan-bar:hover { background: #e6f5ff; border-color: #5dbbe3; }
+        .scan-bar span { color: #5dbbe3; font-weight: 700; font-size: 0.95rem; }
+
+        /* Form Layout */
+        .input-row { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 30px; }
+        label { display: block; font-size: 0.7rem; font-weight: 800; color: #bbb; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px; }
+        input[type="text"], input[type="date"], input[type="number"], select {
+            width: 100%; padding: 12px 15px; border: 1px solid #e1e4e8;
+            border-radius: 10px; font-size: 1rem; color: #444;
+        }
+
+        /* Table Design */
+        .items-table { width: 100%; border-collapse: collapse; }
+        .items-table th { text-align: left; padding: 10px; color: #999; font-size: 0.75rem; border-bottom: 2px solid #f5f7f9; }
+        .items-table td { padding: 15px 10px; border-bottom: 1px solid #f5f7f9; vertical-align: middle; }
+
+        /* Member Chips Tray */
+        .member-tray { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+        .chip {
+            padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+            background: #f1f3f5; color: #999; cursor: pointer; border: 1px solid transparent;
+            transition: all 0.2s; user-select: none;
+        }
+        .chip:hover { background: #e9ecef; }
+        .chip.active { background: skyblue; color: white; }
+        .chip.everyone-toggle { background: #fff; border: 1px solid #ddd; color: #666; }
+        .chip.everyone-toggle:hover { border-color: skyblue; color: skyblue; }
+
+        .add-row { color: skyblue; font-size: 0.9rem; font-weight: 700; cursor: pointer; display: inline-block; margin-top: 15px; }
+
+        /* Modal Footer */
+        .modal-footer { padding: 30px 40px; background: #fafbfc; border-top: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+        .total-box { display: flex; align-items: center; gap: 40px; }
+        .payment-label { font-size: 0.8rem; font-weight: 800; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .total-amount { font-size: 1.8rem; font-weight: 800; color: #2c3e50; }
+
+        .btn { padding: 14px 32px; border-radius: 12px; font-weight: 700; border: none; cursor: pointer; font-size: 0.95rem; }
+        .btn-cancel { background: #eee; color: #777; margin-right: 12px; }
+        .btn-save { background: skyblue; color: white; box-shadow: 0 4px 15px rgba(135, 206, 235, 0.4); }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <header class="top-bar"><div class="brand">ZETTO</div></header>
+        <div class="dashboard-content"><div class="pane"></div></div>
+    </div>
+
+    <div class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>New Bill</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="scan-bar">
+                    <span>📷 SCAN RECEIPT TO AUTO-FILL</span>
+                </div>
+
+                <div class="input-row">
+                    <div>
+                        <label>Description</label>
+                        <input type="text" placeholder="What was this for?" value="Main Course & Drinks">
+                    </div>
+                    <div>
+                        <label>Date</label>
+                        <input type="date" value="2026-02-24">
+                    </div>
+                </div>
+
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%;">Item</th>
+                            <th style="width: 10%;">Qty</th>
+                            <th style="width: 15%;">Price (¥)</th>
+                            <th style="width: 50%;">Enjoyed By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Item 1 -->
+                        <tr>
+                            <td><input type="text" value="Whole Peking Duck"></td>
+                            <td><input type="number" value="1"></td>
+                            <td><input type="text" value="150.00"></td>
+                            <td>
+                                <div class="member-tray">
+                                    <div class="chip everyone-toggle">All</div>
+                                    <div class="chip active">Jieming</div>
+                                    <div class="chip active">An Yee</div>
+                                    <div class="chip active">Lucas</div>
+                                    <div class="chip">Liang Yi</div>
+                                    <div class="chip active">Qi Le</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Item 2 -->
+                        <tr>
+                            <td><input type="text" value="Tsingtao Beer"></td>
+                            <td><input type="number" value="6"></td>
+                            <td><input type="text" value="60.00"></td>
+                            <td>
+                                <div class="member-tray">
+                                    <div class="chip everyone-toggle">All</div>
+                                    <div class="chip">Jieming</div>
+                                    <div class="chip">An Yee</div>
+                                    <div class="chip active">Lucas</div>
+                                    <div class="chip active">Liang Yi</div>
+                                    <div class="chip">Qi Le</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="add-row">+ Add Line Item</div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="total-box">
+                    <div>
+                        <label class="payment-label">Paid By</label>
+                        <select style="min-width: 150px; margin-bottom: 0;">
+                            <option>Lucas</option>
+                            <option>Jieming</option>
+                            <option>An Yee</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="payment-label">Total Amount</label>
+                        <div class="total-amount">¥ 210.00</div>
+                    </div>
+                </div>
+
+                <div>
+                    <button class="btn btn-cancel">Discard</button>
+                    <button class="btn btn-save">Create Bill</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
