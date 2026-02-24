@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zetto - Trip Concluded</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f7f9; color: #333;
+        }
+
+        /* --- BACKGROUND CONTENT (SUBTLE BLUR) --- */
+        .app-wrapper { 
+            display: flex; flex-direction: column; height: 100vh; 
+            filter: blur(1.5px); pointer-events: none; opacity: 0.8; 
+        }
+        .top-bar { background: white; padding: 0 40px; height: 70px; border-bottom: 1px solid #e1e4e8; display: flex; align-items: center; }
+        .brand { font-weight: 800; font-size: 1.4rem; color: skyblue; }
+
+        /* --- MODAL OVERLAY --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(30, 45, 60, 0.6); 
+            display: flex; justify-content: center; align-items: center; z-index: 1000;
+        }
+
+        /* --- SETTLEMENT MODAL --- */
+        .settlement-card {
+            background: white; width: 800px; max-width: 95%; max-height: 85vh;
+            border-radius: 28px; box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+            display: flex; flex-direction: column; overflow: hidden;
+            animation: modalFadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalFadeUp {
+            from { opacity: 0; transform: translateY(40px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .conclude-header {
+            background: linear-gradient(135deg, skyblue, #5dbbe3);
+            padding: 40px; text-align: center; color: white;
+        }
+        .conclude-header h1 { margin: 0; font-size: 2rem; letter-spacing: 1px; }
+        .conclude-header p { margin: 10px 0 0; opacity: 0.9; font-weight: 500; }
+
+        .modal-scroll-area { padding: 40px; overflow-y: auto; }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: #f8fbff; border: 1px solid #e1f0f7; padding: 20px;
+            border-radius: 16px; text-align: center;
+        }
+        .stat-val { display: block; font-size: 1.4rem; font-weight: 800; color: #2c3e50; }
+        .stat-label { font-size: 0.75rem; color: #999; text-transform: uppercase; font-weight: 700; margin-top: 5px; }
+
+        /* Settlement Section */
+        .section-title {
+            font-size: 0.85rem; font-weight: 800; color: #bbb;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+        }
+        .section-title::after { content: ""; flex: 1; height: 1px; background: #eee; }
+
+        .settlement-list { display: flex; flex-direction: column; gap: 12px; }
+        .settlement-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; background: white; border: 1px solid #eee;
+            border-radius: 16px; transition: transform 0.2s;
+        }
+        .settlement-row:hover { transform: translateX(5px); border-color: skyblue; }
+
+        .debtor-info { display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 36px; height: 36px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #777; font-size: 0.8rem; }
+        .blue-avatar { background: #e0f4ff; color: skyblue; }
+
+        .arrow { color: #ccc; font-weight: bold; }
+        
+        .amount-pill {
+            background: #f0faf0; color: #2ecc71; padding: 6px 14px;
+            border-radius: 20px; font-weight: 800; font-size: 0.95rem;
+        }
+
+        /* Footer */
+        .settlement-footer {
+            padding: 30px 40px; border-top: 1px solid #f0f0f0;
+            display: flex; justify-content: space-between; align-items: center;
+            background: #fafbfc;
+        }
+
+        .btn {
+            padding: 14px 28px; border-radius: 12px; font-weight: 700;
+            cursor: pointer; border: none; font-size: 1rem;
+        }
+        .btn-ghost { background: transparent; color: #aaa; }
+        .btn-finish { background: skyblue; color: white; box-shadow: 0 4px 15px rgba(135, 206, 235, 0.4); }
+
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <header class="top-bar"><div class="brand">ZETTO</div></header>
+    </div>
+
+    <div class="modal-overlay">
+        <div class="settlement-card">
+            <div class="conclude-header">
+                <h1>Trip Concluded!</h1>
+                <p>China Vacation 2026 • 14d 22h total</p>
+            </div>
+            
+            <div class="modal-scroll-area">
+                <!-- Fun Stats Section -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-val">¥ 12,450</span>
+                        <span class="stat-label">Total Spent</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-val">42</span>
+                        <span class="stat-label">Bills Logged</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-val">🥟</span>
+                        <span class="stat-label">Top Category (Food)</span>
+                    </div>
+                </div>
+
+                <!-- Optimized Settlement -->
+                <div class="section-title">Optimized Settlement</div>
+                
+                <div class="settlement-list">
+                    <!-- Row 1 -->
+                    <div class="settlement-row">
+                        <div class="debtor-info">
+                            <div class="avatar">AY</div>
+                            <strong>An Yee</strong>
+                        </div>
+                        <div class="arrow">pays</div>
+                        <div class="debtor-info">
+                            <strong>Lucas</strong>
+                            <div class="avatar blue-avatar">L</div>
+                        </div>
+                        <div class="amount-pill">¥ 450.20</div>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="settlement-row">
+                        <div class="debtor-info">
+                            <div class="avatar">JM</div>
+                            <strong>Jieming</strong>
+                        </div>
+                        <div class="arrow">pays</div>
+                        <div class="debtor-info">
+                            <strong>Qi Le</strong>
+                            <div class="avatar blue-avatar">QL</div>
+                        </div>
+                        <div class="amount-pill">¥ 1,200.00</div>
+                    </div>
+
+                    <!-- Row 3 -->
+                    <div class="settlement-row">
+                        <div class="debtor-info">
+                            <div class="avatar">LY</div>
+                            <strong>Liang Yi</strong>
+                        </div>
+                        <div class="arrow">pays</div>
+                        <div class="debtor-info">
+                            <strong>Lucas</strong>
+                            <div class="avatar blue-avatar">L</div>
+                        </div>
+                        <div class="amount-pill">¥ 85.50</div>
+                    </div>
+                </div>
+
+                <p style="text-align: center; color: #aaa; font-size: 0.8rem; margin-top: 25px;">
+                    💡 Zetto has minimized the number of transfers for your group.
+                </p>
+            </div>
+
+            <div class="settlement-footer">
+                <button class="btn btn-ghost">Export as PDF</button>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-finish">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
