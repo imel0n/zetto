@@ -3,189 +3,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Calendar</title>
+    <title>Zetto - Event Calendar</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body, html {
             margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f7f9;
+            color: #333;
+        }
+
+        .app-wrapper {
             display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
+
+        /* Top Navigation Bar */
+        .top-bar {
+            background-color: white;
+            padding: 0 40px;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e1e4e8;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: skyblue;
+            letter-spacing: 1px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            background-color: #ddd;
+            border-radius: 50%;
+        }
+
+        /* Main Dashboard Content */
+        .dashboard-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* Sidebar */
         .sidebar {
-            width: 30%;
-            margin-right: 20px;
+            flex: 0 0 25%;
+            overflow-y: auto;
         }
+
         .mini-calendar {
             background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
         }
+
         .calendar-header {
             text-align: center;
             font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #222;
         }
+
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+            gap: 8px;
         }
+
         .day-name {
-            font-weight: bold;
+            font-weight: 600;
             text-align: center;
-            padding: 5px;
+            padding: 8px;
+            font-size: 0.8rem;
+            color: #666;
         }
+
         .day {
             text-align: center;
             padding: 10px;
             border: 1px solid #eee;
             cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            background-color: #fafbfc;
+            font-size: 0.9rem;
         }
+
         .day:hover {
-            background-color: #f0f0f0;
+            background-color: #f0f8ff;
+            border-color: skyblue;
         }
+
         .day.event-day {
-            background-color: #4CAF50;
+            background-color: skyblue;
             color: white;
+            border-color: skyblue;
+            font-weight: 600;
         }
+
+        /* Main Content Area */
         .main-content {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
         }
+
+        .page-title {
+            margin: 0 0 25px 0;
+            font-size: 2rem;
+            color: #222;
+            font-weight: 700;
+        }
+
         .date-panes {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
+
         .date-pane {
             background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            border-left: 6px solid skyblue;
         }
+
         .date-header {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #222;
         }
+
         .events-list {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
+
         .event-item {
-            margin-bottom: 8px;
-            padding: 8px;
-            background-color: #f9f9f9;
-            border-left: 4px solid #4CAF50;
+            margin-bottom: 12px;
+            padding: 12px 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.2s;
+            border-left: 3px solid skyblue;
         }
+
+        .event-item:hover {
+            background-color: #f0f8ff;
+        }
+
         .event-time {
-            font-weight: bold;
-            color: #555;
+            font-weight: 700;
+            color: skyblue;
+            min-width: 80px;
+            font-size: 0.9rem;
         }
+
         .event-description {
-            margin-left: 10px;
+            color: #555;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            background-color: white;
+            border-top: 1px solid #e1e4e8;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 100px;
+        }
+
+        .nav-link {
+            color: #aaa;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-link.active {
+            color: skyblue;
+            border-bottom: 3px solid skyblue;
+            padding-bottom: 5px;
+        }
+
+        .nav-link:hover {
+            color: skyblue;
         }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="mini-calendar">
-            <div class="calendar-header">February 2026</div>
-            <div class="calendar-grid">
-                <div class="day-name">Sun</div>
-                <div class="day-name">Mon</div>
-                <div class="day-name">Tue</div>
-                <div class="day-name">Wed</div>
-                <div class="day-name">Thu</div>
-                <div class="day-name">Fri</div>
-                <div class="day-name">Sat</div>
-                <!-- Empty cells for days before July 1 -->
-                <div class="day">1</div>
-                <div class="day">2</div>
-                <div class="day">3</div>
-                <div class="day">4</div>
-                <div class="day">5</div>
-                <div class="day">6</div>
-                <div class="day">7</div>
-                <div class="day">8</div>
-                <div class="day">9</div>
-                <div class="day">10</div>
-                <div class="day">11</div>
-                <div class="day">12</div>
-                <div class="day">13</div>
-                <div class="day">14</div>
-                <div class="day event-day">15</div>
-                <div class="day event-day">16</div>
-                <div class="day event-day">17</div>
-                <div class="day">18</div>
-                <div class="day">19</div>
-                <div class="day">20</div>
-                <div class="day">21</div>
-                <div class="day">22</div>
-                <div class="day">23</div>
-                <div class="day">24</div>
-                <div class="day">25</div>
-                <div class="day">26</div>
-                <div class="day">27</div>
-                <div class="day">28</div>
+    <div class="app-wrapper">
+        <!-- Top Navigation Bar -->
+        <header class="top-bar">
+            <div class="brand">ZETTO</div>
+            <div class="user-info">
+                <span>Events</span>
+                <div class="avatar"></div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Sidebar with Mini Calendar -->
+            <div class="sidebar">
+                <div class="mini-calendar">
+                    <div class="calendar-header">February 2026</div>
+                    <div class="calendar-grid">
+                        <div class="day-name">Sun</div>
+                        <div class="day-name">Mon</div>
+                        <div class="day-name">Tue</div>
+                        <div class="day-name">Wed</div>
+                        <div class="day-name">Thu</div>
+                        <div class="day-name">Fri</div>
+                        <div class="day-name">Sat</div>
+                        <!-- Empty cells for days before July 1 -->
+                        <div class="day">1</div>
+                        <div class="day">2</div>
+                        <div class="day">3</div>
+                        <div class="day">4</div>
+                        <div class="day">5</div>
+                        <div class="day">6</div>
+                        <div class="day">7</div>
+                        <div class="day">8</div>
+                        <div class="day">9</div>
+                        <div class="day">10</div>
+                        <div class="day">11</div>
+                        <div class="day">12</div>
+                        <div class="day">13</div>
+                        <div class="day">14</div>
+                        <div class="day event-day">15</div>
+                        <div class="day event-day">16</div>
+                        <div class="day event-day">17</div>
+                        <div class="day">18</div>
+                        <div class="day">19</div>
+                        <div class="day">20</div>
+                        <div class="day">21</div>
+                        <div class="day">22</div>
+                        <div class="day">23</div>
+                        <div class="day">24</div>
+                        <div class="day">25</div>
+                        <div class="day">26</div>
+                        <div class="day">27</div>
+                        <div class="day">28</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <h1 class="page-title">Event Calendar</h1>
+                <div class="date-panes">
+                    <div class="date-pane">
+                        <div class="date-header">February 15, 2026</div>
+                        <ul class="events-list">
+                            <li class="event-item">
+                                <span class="event-time">9:00 AM</span>
+                                <span class="event-description">Airport to hotel</span>
+                            </li>
+                            <li class="event-item">
+                                <span class="event-time">12:00 PM</span>
+                                <span class="event-description">Lunch</span>
+                            </li>
+                            <li class="event-item">
+                                <span class="event-time">6:00 PM</span>
+                                <span class="event-description">Dinner</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="date-pane">
+                        <div class="date-header">February 16, 2026</div>
+                        <ul class="events-list">
+                            <li class="event-item">
+                                <span class="event-time">9:00 AM</span>
+                                <span class="event-description">Mao Zedong Mausoleum</span>
+                            </li>
+                            <li class="event-item">
+                                <span class="event-time">3:00 PM</span>
+                                <span class="event-description">Lunch</span>
+                            </li>
+                            <li class="event-item">
+                                <span class="event-time">10:00 PM</span>
+                                <span class="event-description">Supper</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="date-pane">
+                        <div class="date-header">February 17, 2026</div>
+                        <ul class="events-list">
+                            <li class="event-item">
+                                <span class="event-time">10:00 AM</span>
+                                <span class="event-description">Great Wall</span>
+                            </li>
+                            <li class="event-item">
+                                <span class="event-time">7:00 PM</span>
+                                <span class="event-description">Dinner and xiangsheng</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="main-content">
-        <h1>Event Calendar</h1>
-        <div class="date-panes">
-        <div class="date-pane">
-            <div class="date-header">February 15, 2026</div>
-            <ul class="events-list">
-                <li class="event-item">
-                    <span class="event-time">9:00 AM</span>
-                    <span class="event-description">Airport to hotel</span>
-                </li>
-                <li class="event-item">
-                    <span class="event-time">12:00 PM</span>
-                    <span class="event-description">Lunch</span>
-                </li>
-                <li class="event-item">
-                    <span class="event-time">6:00 PM</span>
-                    <span class="event-description">Dinner</span>
-                </li>
-            </ul>
-        </div>
-        <div class="date-pane">
-            <div class="date-header">February 16, 2026</div>
-            <ul class="events-list">
-                <li class="event-item">
-                    <span class="event-time">9:00 AM</span>
-                    <span class="event-description">Mao Zedong Mausoleum</span>
-                </li>
-                <li class="event-item">
-                    <span class="event-time">3:00 PM</span>
-                    <span class="event-description">Lunch</span>
-                </li>
-                <li class="event-item">
-                    <span class="event-time">10:00 PM</span>
-                    <span class="event-description">Supper</span>
-                </li>
-            </ul>
-        </div>
-        <div class="date-pane">
-            <div class="date-header">February 17, 2026</div>
-            <ul class="events-list">
-                <li class="event-item">
-                    <span class="event-time">10:00 AM</span>
-                    <span class="event-description">Great Wall</span>
-                </li>
-                <li class="event-item">
-                    <span class="event-time">7:00 PM</span>
-                    <span class="event-description">Dinner and xiangsheng</span>
-                </li>
-            </ul>
-        </div>
+
+        <!-- Footer Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-links">
+                <div class="nav-link">✈ My Trips</div>
+                <div class="nav-link active">📅 Calendar</div>
+                <div class="nav-link">👤 Profile</div>
+            </div>
+        </nav>
     </div>
 </body>
 </html>
